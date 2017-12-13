@@ -1,0 +1,30 @@
+//@version=1
+study("Mayer Multiple BBand", overlay=false)
+
+psma_length = input(200, title="Price SMA Length")
+msma_length = input(200, title="Multiple SMA Length")
+
+ma = sma(close, psma_length)
+multiple = close / ma
+mma = sma(multiple, msma_length)
+bb_u = mma + (stdev(multiple, msma_length))
+bb_l = mma - (stdev(multiple, msma_length))
+bb_u2 = mma + (2*stdev(multiple, msma_length))
+bb_l2 = mma - (2*stdev(multiple, msma_length))
+
+
+plot(multiple, title='Mayer Multiple', color=#891A0D, linewidth=3)
+plot(mma, color=orange, linewidth=2)
+
+pmma=plot(mma, linewidth=1, color=orange)
+pbb_u=plot(bb_u, color=green, linewidth=1)
+pbb_l=plot(bb_l, color=red, linewidth=1)
+pbb_u2 = plot(bb_u2, color=green, linewidth=2)
+pbb_l2 = plot(bb_l2, color=red, linewidth=2)
+
+fill(pmma,pbb_u2, color=green, transp=90)
+fill(pbb_u,pbb_u2, color=green, transp=90)
+fill(pmma, pbb_l2, color=red, transp=90)
+fill(pbb_l, pbb_l2, color=red, transp=90)
+
+plot(close)
